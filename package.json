@@ -1,0 +1,42 @@
+{
+  "name": "repeat-startcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "tsc & node build/bin/www.js",
+    "dev": "nodemon src/bin/www.ts",
+    "dev:debug": "nodemon --inspect src/bin/www.ts"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/**/*",
+      ".git",
+      "node-modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "execMap": {
+      "ts": "node -r ts-node/register"
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/express": "^4.17.11",
+    "debug": "^2.6.9",
+    "nodemon": "^2.0.7",
+    "ts-node": "^9.1.1"
+  }
+}
