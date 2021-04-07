@@ -10,6 +10,10 @@ import frienRouts from "./routes/frinedsRouts";
 dotenv.config();
 const app = express();
 
+
+ 
+
+
 //app.use('/static', express.static('public'))
 app.use(express.static(path.join(process.cwd(), "public"))); //cwd = current working directory
 app.use(express.json())
