@@ -1,5 +1,5 @@
 import app from "../app";
-import d from "debug";
+import d from "DEBUG";
 const debug = d("www");
 
 const PORT = process.env.PORT || 3333;
