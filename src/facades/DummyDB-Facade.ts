@@ -52,11 +52,17 @@ class FriendsFacade {
   }
   async getAllFriends(): Promise<Array<IFriend>> {
     const f: Array<IFriend> = this.friends;
-    return arrayValuePromise<IFriend>(this.friends);
+    return arrayValuePromise<IFriend>(f);
   }
   async getFrind(friendEmail: string): Promise<IFriend | null> {
     let friend: IFriend | null;
     friend = this.friends.find((f) => f.email === friendEmail) || null;
+    return singleValuePromise<IFriend>(friend);
+  }
+
+  async getFriendByID(id:string): Promise<IFriend | null> {
+    let friend: IFriend | null;
+    friend = this.friends.find((f) => f.id === id) || null;
     return singleValuePromise<IFriend>(friend);
   }
 }
