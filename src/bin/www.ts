@@ -6,7 +6,7 @@ import d from "debug";
 const debug = d("www");
 */
 const debug = require("DEBUG")("www");
-
+console.log(debug);
 const PORT = process.env.PORT || 3333;
 
 app.listen(PORT, () => {

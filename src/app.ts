@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response } from "express";
 import path from "path";
 import dotenv from "dotenv";
 import frienRouts from "./routes/frinedsRouts";
@@ -7,6 +8,12 @@ const debug = require("DEBUG")("app");
 const app = express();
 import mylogger from "./middleware/simpleLogger";
 import logger, { stream } from "./middleware/logger";
+import { ApiError } from "./errors/apiErrors";
+
+var corsOptions = {
+  origin: "http://localhost:5252/",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
 const morganFormat = process.env.NODE_ENV == "production" ? "combined" : "dev";
 app.use(require("morgan")(morganFormat, { stream }));
 app.set("logger", logger); //This line sets the logger with a global key on the application object
@@ -39,15 +46,62 @@ app.use(mylogger);
 //app.use('/static', express.static('public'))
 app.use(express.static(path.join(process.cwd(), "public"))); //cwd = current working directory
 app.use(express.json());
+
+
+/*
+purpouse of this code is to test if log in works and saves credentials. Shoud not be used for anything else
+app.get("/me", (req: any, res) => {
+  //must use any here, because we did that also in basic-auth.ts to add new property
+  const user = req.credentials;
+  console.log("user in /me: ", user);
+  res.json(user);
+});
+*/
 app.get("/demo", (req, res) => {
   logger.log("info", "demo requested");
   logger.log("error", "some error");
   let a = 123;
   // a='dss' gives fail that typescripts wants it to be of the first instantiated
-  console.log(a);
   res.send("Server is up!!.!");
 });
 
-app.use("/api/friends", frienRouts);
+import myCors from "./middleware/myCors";
+//defines cors for following REST endpoints
+//app.use(myCors) // customcors
+
+//node cors
+import cors from "cors";
+
+app.use("/api/friends", cors(corsOptions), frienRouts);
+
+/*
+//if there is no endpoint that can send response, it get tu this middleware
+app.use((req, res, next) => {
+  //res.status(404).json({ msg: "not found", errorCode:404 });
+  next();
+});*/
+//smarter way to do whta in code above
+app.use(
+  "/api",
+  (req, res, next) => {
+    res.status(404).json({ msg: "not found", errorCode: 404 });
+  },
+  cors(corsOptions)
+);
+
+//import {Request, Response} from 'express'
+app.use(
+  cors(corsOptions),
+  (err: any, req: Request, res: Response, next: Function) => {
+    if (err instanceof ApiError) {
+      //const e:ApiError= err
+      res
+        .status(err.errorCode)
+        .json({ errorCode: err.errorCode, msg: err.message });
+    } else {
+      next(err);
+    }
+  }
+);
 
 export default app;

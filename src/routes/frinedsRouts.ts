@@ -4,6 +4,8 @@ const router = express.Router();
 import facade from "../facades/DummyDB-Facade";
 import { IFriend } from "../interfaces/IFriend";
 
+import authMiddleware from "../middleware/basic-auth";
+router .use("/",authMiddleware);
 router.get("/all", async (req, res) => {
   const friends = await facade.getAllFriends();
   res.json(
@@ -34,7 +36,8 @@ router.get("/findby-username/:userid", async (req, res, next) => {
   const userID = req.params.userid;
   const fr = await facade.getFriendByID(userID);
   if (fr == null) {
-    throw new Error("user not found");
+    // throw new Error("user not found");
+    return next(new Error("user not found"));
   }
   const { firstName, lastName, email } = fr;
   const friendDTO = { firstName, lastName, email };
