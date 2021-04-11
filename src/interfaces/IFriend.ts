@@ -1,8 +1,9 @@
 export interface IFriend {
-    id: string
+    id?: string
     firstName: string
     lastName: string
     email: string
     password: string
+    role?: string
   }
   

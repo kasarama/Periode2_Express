@@ -5,3 +5,4 @@ build
 logs/*
 # don't ignore keep files
 !.keep
+src/utils
