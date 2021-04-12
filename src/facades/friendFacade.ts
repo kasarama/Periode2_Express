@@ -1,7 +1,7 @@
 import { IFriend } from '../interfaces/IFriend';
 import { Db, Collection } from "mongodb";
 import bcrypt from "bcryptjs";
-import { ApiError } from '../errors/errors';
+import { ApiError } from '../errors/apiErrors';
 import Joi, { ValidationError } from "joi"
 
 const BCRYPT_ROUNDS = 10;

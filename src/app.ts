@@ -2,7 +2,7 @@ import express from "express";
 import { Request, Response } from "express";
 import path from "path";
 import dotenv from "dotenv";
-import frienRouts from "./routes/frinedsRouts";
+import dummyFrienRouts from "./routes/dummyFrinedsRouts";
 dotenv.config();
 const debug = require("DEBUG")("app");
 const app = express();
@@ -72,7 +72,7 @@ import myCors from "./middleware/myCors";
 //node cors
 import cors from "cors";
 
-app.use("/api/friends", cors(corsOptions), frienRouts);
+app.use("/api/dummyFriends", cors(corsOptions), dummyFrienRouts);
 
 /*
 //if there is no endpoint that can send response, it get tu this middleware
