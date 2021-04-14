@@ -31,8 +31,8 @@ class FriendsFacade {
   async addFriend(friend: IFriend): Promise<IFriend | null> {
     // throw new Error("Not Yet Implemented");
 
-    const id =
-      parseInt(this.friends[this.friends.length - 1].id.slice(2), 10) + 1;
+    const id = `id${this.friends.length}`;
+    // parseInt(this.friends[this.friends.length - 1].id.slice(2), 10) + 1;
     friend.id = "id" + id;
     this.friends.push(friend);
     return singleValuePromise<IFriend>(this.friends[this.friends.length - 1]);
@@ -60,7 +60,7 @@ class FriendsFacade {
     return singleValuePromise<IFriend>(friend);
   }
 
-  async getFriendByID(id:string): Promise<IFriend | null> {
+  async getFriendByID(id: string): Promise<IFriend | null> {
     let friend: IFriend | null;
     friend = this.friends.find((f) => f.id === id) || null;
     return singleValuePromise<IFriend>(friend);

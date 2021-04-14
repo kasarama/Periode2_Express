@@ -9,6 +9,7 @@ const app = express();
 import mylogger from "./middleware/simpleLogger";
 import logger, { stream } from "./middleware/logger";
 import { ApiError } from "./errors/apiErrors";
+import friendRouts from "./routes/friendRoutsAuth";
 
 var corsOptions = {
   origin: "http://localhost:5252/",
@@ -47,7 +48,6 @@ app.use(mylogger);
 app.use(express.static(path.join(process.cwd(), "public"))); //cwd = current working directory
 app.use(express.json());
 
-
 /*
 purpouse of this code is to test if log in works and saves credentials. Shoud not be used for anything else
 app.get("/me", (req: any, res) => {
@@ -73,6 +73,7 @@ import myCors from "./middleware/myCors";
 import cors from "cors";
 
 app.use("/api/dummyFriends", cors(corsOptions), dummyFrienRouts);
+app.use("/api/friends", cors(corsOptions), friendRouts);
 
 /*
 //if there is no endpoint that can send response, it get tu this middleware
@@ -89,7 +90,6 @@ app.use(
   cors(corsOptions)
 );
 
-//import {Request, Response} from 'express'
 app.use(
   cors(corsOptions),
   (err: any, req: Request, res: Response, next: Function) => {

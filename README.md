@@ -4,4 +4,4 @@ And for debug : DEBUG=www
 
 #Add database credentials
 
-Remember when doing npm run dev:debug  to choose from command pallet Debug: Togle Auto Attach - Only with flag
+Remember when doing npm run dev:debug to choose from command pallet Debug: Togle Auto Attach - Only with flag
