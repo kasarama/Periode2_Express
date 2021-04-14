@@ -3,7 +3,6 @@ import { Db, Collection } from "mongodb";
 import bcrypt from "bcryptjs";
 import { ApiError } from "../errors/apiErrors";
 import Joi, { string, ValidationError } from "joi";
-console.log("In facade");
 const BCRYPT_ROUNDS = 10;
 
 const USER_INPUT_SCHEMA = Joi.object({
@@ -62,9 +61,16 @@ class FriendsFacade {
     const hashedpw = await bcrypt.hash(friend.password, BCRYPT_ROUNDS);
     const f = { ...friend, password: hashedpw };
 
-    //TODO ######################################
-    throw new Error("COMPLETE THIS METHOD");
-    // #########################################
+    const result = await this.friendCollection.updateOne(
+      { email: email },
+      {
+        $set: { ...friend },
+        $currentDate: { lastModified: true },
+      }
+    );
+    const modifiedCount = result.modifiedCount;
+    console.log(modifiedCount);
+    return { modifiedCount: modifiedCount };
   }
 
   /**
@@ -73,9 +79,13 @@ class FriendsFacade {
    * @returns true if deleted otherwise false
    */
   async deleteFriend(friendEmail: string): Promise<boolean> {
-    //TODO #####################################
-    throw new Error("COMPLETE THIS METHOD");
-    // #########################################
+    const result = await this.friendCollection.deleteOne({
+      email: friendEmail,
+    });
+    if (result.deletedCount) {
+      return true;
+    }
+    return false;
   }
 
   async getAllFriends(): Promise<Array<IFriend>> {
@@ -116,6 +126,11 @@ class FriendsFacade {
       email: friendEmail,
     });
     if (friend && (await bcrypt.compare(password, friend.password))) {
+      if (friend.email === "admin@mail.com") {
+        friend.role = "admin";
+      } else {
+        friend.role = "user";
+      }
       return friend;
     }
     return Promise.resolve(null);

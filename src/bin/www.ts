@@ -13,7 +13,6 @@ import { DbConnector } from "../config/dbConnector";
 const PORT = process.env.PORT || 3333;
 
 (async function connectToDb() {
-  console.log("Setting up db to use on app");
   const connection = await DbConnector.connect();
   const db = connection.db(process.env.DB_NAME);
   app.set("db", db); //Make the database available to the rest of the application
