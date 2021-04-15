@@ -72,8 +72,8 @@ router.put("/editme", async function (req: any, res, next) {
       throw new ApiError("This endpoint requires authentication", 500);
     }
     const email = req.credentials.userName; //GET THE USERS EMAIL FROM SOMEWHERE (req.params OR req.credentials.userName)
-    const friend = req.body
-    res.json(await facade.editFriend(email,friend)
+    const friend = req.body;
+    res.json(await facade.editFriend(email, friend));
   } catch (err) {
     debug(err);
     if (err instanceof ApiError) {
