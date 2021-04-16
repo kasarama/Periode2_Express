@@ -100,16 +100,15 @@ class FriendsFacade {
    * @throws ApiError if not found
    */
   async getFriend(friendEmail: string): Promise<IFriendDTO> {
+    let userDTO = null;
     const result = await this.friendCollection
       .find({ email: friendEmail })
       .toArray();
-
-    const userDTO = fToDTO(result[0]);
-    if ((result.length = 0)) {
-      throw new ApiError("COMPLETE THIS METHOD", 404);
+    if (result.length != 0) {
+      return fToDTO(result[0]);
+    } else {
+      throw new ApiError("friend not found", 404);
     }
-
-    return userDTO;
   }
 
   /**
