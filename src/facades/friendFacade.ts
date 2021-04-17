@@ -32,7 +32,7 @@ class FriendsFacade {
       throw new ApiError(status.error.message, 400);
     }
     const hashedpw = await bcrypt.hash(friend.password, BCRYPT_ROUNDS);
-    const f = { ...friend, password: hashedpw };
+    const f = { ...friend, password: hashedpw, role:'user' };
     let id;
     try {
       const result = await this.friendCollection.insertOne(f);
@@ -125,11 +125,11 @@ class FriendsFacade {
       email: friendEmail,
     });
     if (friend && (await bcrypt.compare(password, friend.password))) {
-      if (friend.email === "admin@mail.com") {
-        friend.role = "admin";
-      } else {
-        friend.role = "user";
-      }
+      // if (friend.email === "admin@mail.com") {
+      //   friend.role = "admin";
+      // } else {
+      //   friend.role = "user";
+      // }
       return friend;
     }
     return Promise.resolve(null);

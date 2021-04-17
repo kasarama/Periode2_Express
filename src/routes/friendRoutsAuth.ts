@@ -90,7 +90,6 @@ router.get("/me", async (req: any, res, next) => {
     }
     const email = req.credentials.userName; //GET THE USERS EMAIL FROM SOMEWHERE (req.params OR req.credentials.userName)
     const user = await facade.getFriend(email);
-    console.log("endpoint user: ", user);
     if (user == null) {
       throw new ApiError("user not found", 404);
     }
@@ -114,7 +113,7 @@ router.get("/find-user/:email", async (req: any, res, next) => {
     const userId = req.params.email;
     const friend = await facade.getFriend(userId);
     if (friend == null) {
-      throw new ApiError("user not found", 404);
+      next(new ApiError("user not found", 404));
     }
 
     res.json(friend);
@@ -156,7 +155,7 @@ router.delete("/:email", async function (req: any, res, next) {
     }
     const email = req.params.email; //null; //GET THE USERS EMAIL FROM SOMEWHERE (req.params OR req.credentials.userName)
 
-    res.json(await facade.deleteFriend(email));
+    res.json({deleted:await facade.deleteFriend(email)});
   } catch (err) {
     debug(err);
     if (err instanceof ApiError) {

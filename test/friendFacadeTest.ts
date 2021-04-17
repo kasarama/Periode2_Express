@@ -23,8 +23,8 @@ describe("## Verify the Friends Facade ##", function () {
       const client = await InMemoryDbConnector.connect();
       // Get the database and initialize the facade
       const db = client.db();
-      friendCollection = db.collection("friends");
       // Initialize friendCollection, to operate on the database without the facade
+      friendCollection = db.collection("friends");
       facade = new FriendFacade(db);
     } catch (e) {
       console.log(e);
@@ -75,7 +75,13 @@ describe("## Verify the Friends Facade ##", function () {
         password: "secret",
         role: "admin",
       };
-      await expect(facade.addFriend(newFriend)).to.be.rejectedWith(ApiError);
+      // await expect(facade.addFriend(newFriend)).to.be.rejectedWith(ApiError);
+      try {
+        await facade.addFriend(newFriend);
+        expect(false).to.be.true("SHould never get here");
+      } catch (err) {
+        expect(err instanceof ApiError).to.be.true;
+      }
     });
   });
 
@@ -113,7 +119,7 @@ describe("## Verify the Friends Facade ##", function () {
       expect(friend.name).to.equal("Hanna");
     });
     it("It should not find xxx.@.b.dk", async () => {
-      await expect( facade.getFriend("xxx.@b.d")).to.be.rejectedWith(ApiError);
+      await expect(facade.getFriend("xxx.@b.d")).to.be.rejectedWith(ApiError);
     });
   });
 
@@ -134,7 +140,7 @@ describe("## Verify the Friends Facade ##", function () {
       expect(veriefiedHanna).to.be.null;
     });
 
-   it("It should NOT validate a non-existing users credentials", async () => {
+    it("It should NOT validate a non-existing users credentials", async () => {
       const veriefiedHanna = await facade.getVerifiedUser(
         "NONE@mail.com",
         "secret"
