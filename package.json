@@ -10,7 +10,8 @@
     "start": "tsc & node build/src/bin/www.js",
     "dev": "nodemon src/bin/www.ts",
     "dev:debug": "nodemon --inspect src/bin/www.ts",
-    "test2": "mocha --exit  -r ts-node/register playground/what/whattodoTest.ts" 
+    "test2": "mocha --exit  -r ts-node/register playground/what/whattodoTest.ts" ,
+    "test3": "mocha --exit  -r ts-node/register test/fetcherTest.ts"
 
   },
   "nodemonConfig": {

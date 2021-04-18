@@ -10,6 +10,7 @@ import mylogger from "./middleware/simpleLogger";
 import logger, { stream } from "./middleware/logger";
 import { ApiError } from "./errors/apiErrors";
 import friendRouts from "./routes/friendRoutsAuth";
+import nameRouts from "./routes/nameRouts";
 
 var corsOptions = {
   origin: "http://localhost:5252/",
@@ -74,6 +75,7 @@ import cors from "cors";
 
 app.use("/api/dummyFriends", cors(corsOptions), dummyFrienRouts);
 app.use("/api/friends", cors(corsOptions), friendRouts);
+app.use("/api/name", cors(corsOptions), nameRouts);
 
 /*
 //if there is no endpoint that can send response, it get tu this middleware
