@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { ApiError } from "../errors/apiErrors";
 import Joi, { string, ValidationError } from "joi";
 const BCRYPT_ROUNDS = 10;
-
 const USER_INPUT_SCHEMA = Joi.object({
   firstName: Joi.string().min(2).max(40).required(),
   lastName: Joi.string().min(2).max(50).required(),
@@ -19,6 +18,7 @@ class FriendsFacade {
   constructor(db: Db) {
     this.db = db;
     this.friendCollection = db.collection("friends");
+    this.friendCollection.createIndex({ email: 1 }, { unique: true });
   }
 
   /**
@@ -32,7 +32,7 @@ class FriendsFacade {
       throw new ApiError(status.error.message, 400);
     }
     const hashedpw = await bcrypt.hash(friend.password, BCRYPT_ROUNDS);
-    const f = { ...friend, password: hashedpw, role:'user' };
+    const f = { ...friend, password: hashedpw, role: "user" };
     let id;
     try {
       const result = await this.friendCollection.insertOne(f);
